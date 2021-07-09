@@ -10,7 +10,7 @@
 - Workflow
   1. (Part 1) Extract subcellular edge motion profiles and molecular activities from two channel live cell movies, using 'Windowing and Protrusion Package' available at [a different repository](https://github.com/DanuserLab/Windowing-Protrusion).
   2. (Part 2) Run [Pipeline_GCA_2chMovies_ch1ch2.m](software/GrangerCausalityAnalysis/Pipelines/Pipeline_GCA_2chMovies_ch1ch2.m) to implement Cross correlation analysis, Fluctuation profiling, and Granger-causality analysis. The sub-functions for these three modules are located under the [software](software/) folder. 
-  3. Specific scripts for the above (Part 1) is described at [a manual pdf file](software/GrangerCausalityAnalysis/Doc/GCA_Pipeline_Manual_fromStartToFinalOutput.pdf).
+  3. Specific scripts for the above (Part 1) are described at [a manual pdf file](software/GrangerCausalityAnalysis/Doc/GCA_Pipeline_Manual_fromStartToFinalOutput.pdf).
   4. Example output of the pipeline is presented under the [example_output](example_output/) folder. For example, GC pathway diagram output for a toy dataset can be found [here](example_output/cropped-Tada200526_mDia1cr-mNG_Actin-Halo_downSampBilinear/ML_6by6ct2_plusSeg/MLmovies/GCA_3Variables_LF20fr_PL_GCA_2chMov_ewma0p5_Actin_mDia1cr_lL1wL1tL10). 
 
 
