@@ -1,0 +1,4 @@
+Protrusion sampling summary
+
+Mean protrusion	: 32.454 nm/s +/- 22.892 nm/s
+Mean retraction	: -27.073 nm/s +/- 22.984 nm/s
