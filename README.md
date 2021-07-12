@@ -14,10 +14,16 @@
   4. Example output of the pipeline is presented under the [example_output](example_output/) folder. For example, GC pathway diagram output for a toy dataset can be found [here](example_output/cropped-Tada200526_mDia1cr-mNG_Actin-Halo_downSampBilinear/ML_6by6ct2_plusSeg/MLmovies/GCA_3Variables_LF20fr_PL_GCA_2chMov_ewma0p5_Actin_mDia1cr_lL1wL1tL10). 
 
 
+# Documents
+
+- [Introduction to Granger-causality analysis of lamellipodia](/software/GrangerCausalityAnalysis/Doc/20210325_GC25min.pdf)
+- [Introduction to Cross correlation Analysis](/software/mapDiagnosticsXcorrCurves/doc/readme_mapDDX.pdf)
+- [Introduction to Fluctuation profiling around edge motion events](/software/FluctuationProfilingAroundEdgeMotionEvents/doc/readme_FPAEME.pdf)
+
+
 # Software requirement
 
 - The pipeline was built on Matlab R2020a.
-
 
 
 # Contact
