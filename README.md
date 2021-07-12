@@ -19,6 +19,12 @@
 - The pipeline was built on Matlab R2020a.
 
 
+# Documents
+
+- [Introduction to Granger-causality analysis of lamellipodia](/software/GrangerCausalityAnalysis/Doc/20210325_GC25min.pdf)
+- [Introduction to Cross correlation Analysis](/software/mapDiagnosticsXcorrCurves/doc/readme_mapDDX.pdf)
+- [Introduction to Fluctuation profiling around edge motion events](/software/FluctuationProfilingAroundEdgeMotionEvents/doc/readme_FPAEME.pdf)
+
 
 # Contact
 
