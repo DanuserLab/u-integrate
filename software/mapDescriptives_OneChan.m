@@ -46,6 +46,7 @@ function mapDescriptives_OneChan(MD, iChan, maxLayer, chanName, chanTitle, figur
 %       topograph   - if 'off' topographs are not plotted. Default is 'on'.
 %
 % Updated: 
+% J Noh, 2021/12/9. Correct a weird typo (imActtmap) in line 730.
 % J Noh, 2021/07/21. Due to Java memory error in GUI, add figure close
 % commands.
 % J. Noh, 2019/05/31. Add a 'VNtlagMax' option for Vel-Normalization.
