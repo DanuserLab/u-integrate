@@ -21,7 +21,7 @@ function topoFig = topographMD(MD, iFrame, iChan, topoMap, title0, figVisibleFla
 % J Noh, 2018/11/13. In case when the activities are infinite.
 % Jungsik Noh, 2016/06/21 
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

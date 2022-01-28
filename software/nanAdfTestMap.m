@@ -17,7 +17,7 @@ function [pvec, adfMap, indicStationairy] = nanAdfTestMap(map, mapName, smParam)
 % is trend.
 % Jungsik Noh, 2016/10/05
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

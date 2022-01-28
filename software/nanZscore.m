@@ -2,7 +2,7 @@ function z = nanZscore(vec)
 % jungsik noh
 % 2016/07/11
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

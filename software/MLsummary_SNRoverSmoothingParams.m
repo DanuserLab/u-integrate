@@ -7,7 +7,7 @@ function MLsummary_SNRoverSmoothingParams(ML, iChan, chanName, SNRdirName, varar
 % J Noh, 2019/04/18. Remove Gaussian filter 3by3 smoothing case. 
 % J Noh, 2019/04/16.
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

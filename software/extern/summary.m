@@ -72,7 +72,7 @@ function s = summary(x, dim, stdflag)
 % 
 % $ Author: Richie Cotton $     $ Date: 2006/03/16 $
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

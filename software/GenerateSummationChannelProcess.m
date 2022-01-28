@@ -3,7 +3,7 @@ classdef GenerateSummationChannelProcess < ImageProcessingProcess
     % Summation tiff images of two channels for segmentation
     % see additionOf2chanImTiffs.m, additionOf2chan.m
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

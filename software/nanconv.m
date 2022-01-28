@@ -39,7 +39,7 @@ function c = nanconv(a, k, varargin)
 % Copyright (c) 2013, Benjamin Kraus
 % $Id: nanconv.m 4861 2013-05-27 03:16:22Z bkraus $
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

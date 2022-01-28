@@ -7,7 +7,7 @@ function MLsummary_GC_SPAR1ch_informationFlow(ML, iChan1, chan1Name, ...
 % J Noh, 2021/02/05. Rename and add comments. 
 % Jungsik Noh, 2020/01/15
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

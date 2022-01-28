@@ -12,7 +12,7 @@ function MLsummary_quiescentWindow(ML, LBdirName, varargin)
 %
 % J Noh, 2018/11/13
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

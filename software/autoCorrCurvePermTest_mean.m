@@ -4,7 +4,7 @@ function [acCurve, Avg_autocor] = autoCorrCurvePermTest_mean(map, mapName, MDtim
 % together with its confidence bound under the null.
 % Jungsik Noh, 2016/10/19
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

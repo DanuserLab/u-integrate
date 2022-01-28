@@ -5,7 +5,7 @@ classdef ActivityMapDescriptionForGCAProcessML < DataProcessingProcessML
     % J Noh, 7/2021. Modify for GCA package.
     % Qiongjing (Jenny) Zou, Oct 2018
 %
-% Copyright (C) 2021, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
