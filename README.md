@@ -46,14 +46,23 @@
 > <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/selectWindowing.png" height="500"/> 
 
 - Run from Step 1: Generate Summation Channel to Step 8: Window Sampling for all the videos. In Step 2: Segmentation > MSA Segmentation process, check 'Use Output from Summation Channel', when the segmentation is implemented to the sum images as in the paper. 
-- A user should make sure the segmentation results are correct and accurate. You should adjust the segmentation parameters like 'tightness' and 'refinement radius' according to the imaging dataset after watching the segmentation results. 
+- A user should make sure that the segmentation results are correct and accurate. You should adjust the segmentation parameters like 'tightness' and 'refinement radius' according to the imaging dataset after watching the segmentation results. 
 > <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/MSApar_useOutputFromSummationChannel.png" height="500"/> 
 
+- In Step 5: Protrusion process, set 'Mask process' to be 'Mask refinement' so that protrusion vectors are computed based on the refined masks.
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/protrusion_setrefinement.png" height="500"/> 
 
+- In Step 6: Windowing process, set proper window sizes. In the paper, it was set to 6 pixels (720 nanometers).
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/setWindowSieze.png" height="500"/> 
 
+- Once implemented the windowing package, go to 'Granger-Causality Analysis' package from the movieSelectorGUI panel.
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/selectGCApackage.png" height="500"/> 
 
+- The first step of the GCA pacakge is to set up global parameters such as channel indexes, channel name, whether to apply low-frequency subtraction, number of layers to be analyzed, etc (See the paper).
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/GCApar.png" height="500"/> 
 
-
+- You can run the rest steps of the GCA pipeline using the local parameters that are determined based on the global parameters set in Step 1. 
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/runGCA.png" height="500"/> 
 
 
 
