@@ -64,6 +64,9 @@
 - You can run the rest steps of the GCA pipeline using the local parameters that are determined based on the global parameters set in Step 1. 
 > <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/runGCA.png" height="500"/> 
 
+- Output folders of the GCA pipeline
+> <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/GCAoutput.png" /> 
+
 
 
 # Contact
