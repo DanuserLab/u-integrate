@@ -86,28 +86,36 @@ thisProc.setOutFilePaths(outFilePaths);
 
 %% Algorithm
 % see additionOf2chanImTiffs.m
+% Edit to make it work for all MD.Reader, such as BioFormatsReader. Before, 
+% the algorithm only works for TiffSeriesReader. - March 2022
+
 nCh = numel(p.ChannelIndex);
-imgFolderPaths = inFilePaths;
+% imgFolderPaths = inFilePaths;
 outputDir = currOutputDirectory;
 addedChName = 'SummationImg';
 
 I = cell(nCh, 1);
 for k = 1:nCh
-    fileReads = dir(imgFolderPaths{1,k});
-    ind = arrayfun(@(x) (x.isdir == 0), fileReads);
+%     fileReads = dir(imgFolderPaths{1,k});
+%     ind = arrayfun(@(x) (x.isdir == 0), fileReads);
     
-    fileNames = {fileReads(ind).name};
+%     fileNames = {fileReads(ind).name};
+    fileNamesF = movieData.getImageFileNames(k); 
+    fileNames = fileNamesF{1}; % this is the way to get fileNames which works for diff kinds images, including tiffs, bioFormats images
     frmax = numel(fileNames);
     
-    FileTif= fullfile(imgFolderPaths{1,k}, fileNames{1});
-    InfoImage=imfinfo(FileTif);
-    mImage=InfoImage(1).Width
-    nImage=InfoImage(1).Height
+%     FileTif= fullfile(imgFolderPaths{1,k}, fileNames{1});
+%     InfoImage=imfinfo(FileTif);
+%     mImage=InfoImage(1).Width
+%     nImage=InfoImage(1).Height
+    mImage = movieData.imSize_(2)
+    nImage = movieData.imSize_(1)
     
     %I{k} = zeros(nImage, mImage, frmax);
     tmpIm = zeros(nImage, mImage, frmax);
     parfor fr = 1:frmax
-        tmpIm(:,:,fr) = imread(fullfile(imgFolderPaths{1,k}, fileNames{fr}));
+%         tmpIm(:,:,fr) = imread(fullfile(imgFolderPaths{1,k}, fileNames{fr}));
+        tmpIm(:,:,fr) = movieData.channels_(k).loadImage(fr); % this is the way to read image for all MD.Reader
         %imgStack = cat(3, imgStack, I{fr});
         %fprintf(1, '%g ', fr);
         disp(fr)
