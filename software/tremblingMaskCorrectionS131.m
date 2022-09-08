@@ -103,19 +103,19 @@ mask2 = currMask;
 
 for fr = 2:(frmax-1)
 
-% weighted average
-% -> changed on 2017/10/04
-%wvec = [1 2 1];  
-wvec = [1 3 1];  
-% wvec = normpdf([-2,0,2], 0, 1);
-w = wvec./sum(wvec);
+    % weighted average
+    % -> changed on 2017/10/04
+    %wvec = [1 2 1];  
+    wvec = [1 3 1];  
+    % wvec = normpdf([-2,0,2], 0, 1);
+    w = wvec./sum(wvec);
 
-tmp = zeros(size(currMask{1}));
-for k = 1:3
-    tmp = tmp + w(k) .* maskLevel{fr - 2 + k};
-end
-% thresholding
-mask2{fr} = (tmp >= 0.5);
+    tmp = zeros(size(currMask{1}));
+    for k = 1:3
+        tmp = tmp + w(k) .* maskLevel{fr - 2 + k};
+    end
+    % thresholding
+    mask2{fr} = (tmp >= 0.5);
  
 end
  
