@@ -59,7 +59,6 @@ classdef SegmentationProcess < MaskProcess
                  @MultiScaleAutoSegmentationProcess
                  @ThresholdProcess3D;
                  @ExternalSegmentationProcess;
-                 @NucSegProcess;
                 };
             procClasses = cellfun(@func2str, procClasses, 'Unif', 0);
         end
