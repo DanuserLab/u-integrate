@@ -393,8 +393,9 @@ for iChan = 1:nChanThresh
             % which are on the image border. We do this by adding a border
             % of ones on the sides where the mask touches. (if FillBoundaryHoles is True)
             if p.FillBoundaryHoles && any([currMask(1,:) currMask(end,:) currMask(:,1)' currMask(:,end)'])                
-                m = movieData.imSize_(1);
-                n = movieData.imSize_(2);            
+%                 m = movieData.imSize_(1);
+%                 n = movieData.imSize_(2); 
+                [m, n] = size(currMask); % make it work for cropped images
                 %Add a border of 1s
                 tmpIm = vertcat(true(1,n+2),[true(m,1) ...
                                 currMask true(m,1)],true(1,n+2));
@@ -411,8 +412,9 @@ for iChan = 1:nChanThresh
                 % to prevent filling in holes along boundary.
                 if any([currMask(1,:) currMask(end,:) currMask(:,1)' currMask(:,end)'])
                     %Add a border of 1s
-                    m = movieData.imSize_(1);
-                    n = movieData.imSize_(2);
+%                     m = movieData.imSize_(1);
+%                     n = movieData.imSize_(2);
+                    [m, n] = size(currMask); % make it work for cropped images
                     tmpIm = vertcat(false(1,n+2),[false(m,1) ...
                                 currMask false(m,1)],false(1,n+2));
 

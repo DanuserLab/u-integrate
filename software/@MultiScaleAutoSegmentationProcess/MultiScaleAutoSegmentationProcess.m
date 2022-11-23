@@ -76,7 +76,7 @@ classdef MultiScaleAutoSegmentationProcess < SegmentationProcess
             % Set default parameters
             funParams.ChannelIndex = 1:numel(owner.channels_);
             funParams.OutputDirectory = [outputDir  filesep 'MultiScaleAutoSeg_Masks'];
-            funParams.ProcessIndex = []; %Default is to use raw images % this will be auto-set to ShadeCorrectionProcess or CropROIProcess in BiosensorsPackage, see sanityCheck in BiosensorsPackage line 168.
+            funParams.ProcessIndex = []; %Default is to use raw images % this will be auto-set to ShadeCorrectionProcess or CropShadeCorrectROIProcess in BiosensorsPackage, see sanityCheck in BiosensorsPackage.
             funParams.tightness = .5; % thresholding
             funParams.ObjectNumber = 1;
             funParams.finalRefinementRadius = 3;
