@@ -13,7 +13,7 @@ function tremblingMaskCorrectionS131(refinedmaskDir, outputDir, varargin)
 %
 % J Noh, 2017/09/22
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
@@ -132,7 +132,7 @@ for fr = 1:frmax
     %disp(['Frame: ', num2str(fr)])   
     fprintf(1, '%g ', fr);
     %Write the refined mask to file
-    imwrite(mask2{fr}, fullfile(masksOutDir, ['tremblingCrctd_', fileNames{fr}]) );
+    imwrite(mask2{fr}, fullfile(masksOutDir, ['tremblingCrctd_', fileNames{fr}]), 'Compression','none'); % fixed issue of ImageJ cannot open compressed mask. - Qiongjing (Jenny) Zou, Jan 2023
 end
 
 %%

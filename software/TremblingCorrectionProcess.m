@@ -1,9 +1,9 @@
-classdef TremblingCorrectionProcess < ImageProcessingProcess
+classdef TremblingCorrectionProcess < MaskProcessingProcess
     % A concrete process Trembling Correction
     % CORRECT trembling of masks that causes bias in correlation analysis mostly in the outermost layer.
     % see tremblingMaskCorrectionS131.m, maskRefinementCoreFunc.m, tremblingCorrect.m
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
@@ -23,6 +23,10 @@ classdef TremblingCorrectionProcess < ImageProcessingProcess
 % 
     
     % Qiongjing (Jenny) Zou, Aug 2021
+    
+    % Bug fixed, change super class to MaskProcessingProcess, so user will
+    % be asked in MaskRefinementProcess whether to choose this proc as seg
+    % process. -- Qiongjing (Jenny) Zou, Dec 2022
     
     methods
         function obj = TremblingCorrectionProcess(owner,varargin)
@@ -49,7 +53,7 @@ classdef TremblingCorrectionProcess < ImageProcessingProcess
                 super_args{4} = funParams;
             end
             
-            obj = obj@ImageProcessingProcess(super_args{:});
+            obj = obj@MaskProcessingProcess(super_args{:});
         end
         
     end

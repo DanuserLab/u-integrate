@@ -8,7 +8,7 @@ function [protMask1, retMask1] = phaseMasking(MD, smParamTh, figuresDir, varargi
 % Jungsik Noh, 2016/11/01
 % Update by Qiongjing (Jenny) Zou, Aug 2018 
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

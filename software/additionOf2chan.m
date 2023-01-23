@@ -20,7 +20,7 @@ function additionOf2chan(movieDataOrProcess, varargin)
 %
 % Qiongjing (Jenny) Zou, Aug 2021
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
@@ -115,7 +115,7 @@ for k = 1:nCh
     tmpIm = zeros(nImage, mImage, frmax);
     parfor fr = 1:frmax
 %         tmpIm(:,:,fr) = imread(fullfile(imgFolderPaths{1,k}, fileNames{fr}));
-        tmpIm(:,:,fr) = movieData.channels_(k).loadImage(fr); % this is the way to read image for all MD.Reader
+        tmpIm(:,:,fr) = movieData.channels_(k).loadImage(fr); % this is the way to read image for all MD.Reader; this works when input is always raw images.
         %imgStack = cat(3, imgStack, I{fr});
         %fprintf(1, '%g ', fr);
         disp(fr)

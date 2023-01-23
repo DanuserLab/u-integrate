@@ -76,9 +76,11 @@ function movieData = getMovieProtrusion(movieData,paramsIn)
 % 12/2017
 % Parallelized protrusion detection
 %
+% Made it work for cropped movie previously done in Biosensors Package.
+% Qiongjing (Jenny) Zou, Jan 2023
 %% ------- Parameters ------ %%
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
@@ -196,7 +198,18 @@ protrusion = cell(nFrames-1,1);
 normals = cell(nFrames-1,1);
 smoothedEdge = cell(nFrames,1);
 
-roiMask=movieData.getROIMask;
+% Make this process work for previous cropped movie, which is done in CropShadeCorrectROIProcess in BiosensorsPackage. - Jan 2023
+inDir = movieData.processes_{p.SegProcessIndex}.outFilePaths_{1,p.ChannelIndex(1)};
+dinfo = dir(inDir);
+imInfo = imfinfo(fullfile(dinfo(end).folder,dinfo(end).name));
+n = imInfo.Height;
+m = imInfo.Width;
+if isequal(n, movieData.imSize_(1))
+    roiMask=movieData.getROIMask;
+else
+    roiMask = true([n, m, movieData.nFrames_]);
+end
+
 parfor iFrame = 2:nFrames
     [prevMask, isPrevClosed, prevOutline, isPrevClockWise] = ...
         getOutlineInfo(roiMask(:,:,iFrame - 1), iFrame - 1, nChan, maskDirs, maskNames);

@@ -11,7 +11,7 @@ function MLsummary_FluctuationProfiling(ML, chanName, maxLayer, analNameDesc, ou
 % option.
 % Jungsik Noh, 2018/01/30
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

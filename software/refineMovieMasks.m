@@ -134,7 +134,7 @@ function movieData = refineMovieMasks(movieDataOrProcess,paramsIn)
 %
 %% -------- Parameters ---------- %%
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
@@ -437,7 +437,7 @@ for iChan = 1:nChanThresh
         end
         
         %Write the refined mask to file
-        imwrite(currMask,[outMaskDir{iChan} filesep pString maskNames{iChan}{iImage}]);
+        imwrite(currMask,[outMaskDir{iChan} filesep pString maskNames{iChan}{iImage}], 'Compression','none'); % fixed issue of ImageJ cannot open compressed mask. - Qiongjing (Jenny) Zou, Jan 2023
         
         if ishandle(wtBar) && mod(iImage,5)
             %Update the waitbar occasionally to minimize slowdown

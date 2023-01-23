@@ -27,7 +27,7 @@ function MD_iGC_SPAR3ch(MD, iChan1, iChan2, iChan3, chan1Name, chan2Name,chan3Na
 % J Noh, 2018/05/30. Add Common Factor (CF) analysis-based normalization.
 % modified from GC_2chAdjAR.m 2018/05/30
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -40,7 +40,7 @@ function MLsummary_XcorrCurvesVelAcf(ML, iChan1, iChan2, chan1Name, chan2Name, .
 % J Noh, 2017/09/25. Include the summary of ACF of channels.
 % Jungsik Noh, 2017/05/17
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -9,7 +9,7 @@ function xcorrMat = xcorrCurvePermutationTest(ch1Actmap, ch2Actmap, ch1ActmapNam
 %
 % Jungsik Noh, 2016/10/21
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

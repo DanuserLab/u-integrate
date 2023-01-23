@@ -9,7 +9,7 @@ function [acCurve, Avg_autocor] = autoCorrCurvePermTest(map, mapName, MDtimeInte
 % 2017/03/31: Instead of mean(), it uses smoothingSpline.
 % Jungsik Noh, 2016/10/19
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

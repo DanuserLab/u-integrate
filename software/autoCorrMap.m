@@ -3,7 +3,7 @@ function acfMat1 = autoCorrMap(map, varargin)
 % columns for each row) while handling NaN's.
 % Jungsik Noh, 2016/10/29
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

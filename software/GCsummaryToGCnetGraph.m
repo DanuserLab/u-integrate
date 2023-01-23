@@ -7,7 +7,7 @@ function GCsummaryToGCnetGraph(GCsummaryDir, chanDetailedNames, chanNamesforNet,
 % partial-R2.
 % J Noh, 2019/08/06.
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

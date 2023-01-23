@@ -6,7 +6,7 @@ function imputed = myknnimpute(mat)
 % Updated, J Noh, 2017/08/28
 % J Noh, 2020/01/04. If knnimpute makes an error, it returns all nan.
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

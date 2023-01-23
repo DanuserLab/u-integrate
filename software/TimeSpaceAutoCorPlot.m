@@ -4,7 +4,7 @@ function [acmapOf_, corrMatOf_, meanACOf_] ...
 % matrix map, and their means over space and time separately.
 % Jungsik Noh, 2016/10/05
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

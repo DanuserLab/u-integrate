@@ -8,7 +8,7 @@ function MLsummary_phaseDesc_Loop(md1, ch0ActmapName, maxLayer, outDir, ...
 % option.
 % J Noh, 2018/01/30
 %
-% Copyright (C) 2022, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
