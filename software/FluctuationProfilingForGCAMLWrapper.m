@@ -135,11 +135,11 @@ for j = 1:numMDs
     
     % logging output paths
     
-    outPathsMD = cell(numel(p.ChannelIndex), 1);   % per chanID analyzed
-    for i = p.ChannelIndex
-        outPathsMD{i} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+    outPathsMD = cell(numel(movieData.channels_), 1);   % per chanID analyzed
+    for i = 1:numel(p.ChannelIndex)
+        outPathsMD{p.ChannelIndex(i)} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
                 filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{i}]];
-        mkClrDir(outPathsMD{i}); % this func does not clear subfolders!             
+        mkClrDir(outPathsMD{p.ChannelIndex(i)}); % this func does not clear subfolders!             
     end
     outFilePaths{1, j} = outPathsMD;
 end
@@ -149,7 +149,7 @@ end
 process.setInFilePaths(allinFilePaths);
 
 % logging output paths - continue
-currOutputDirectory = cell(numel(p.ChannelIndex), 1);
+currOutputDirectory = cell(numel(movieData.channels_), 1);
 currOutputDirectory{1, 1} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
         filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{1}]];
 mkClrDir(currOutputDirectory{1, 1});    
@@ -193,7 +193,7 @@ for j = 1:numMDs
     % Fluctuation Profiling for each channel
     for i = 1:numel(p.ChannelIndex)
         
-        figuresDir = outFilePaths{j}{i};        
+        figuresDir = outFilePaths{j}{p.ChannelIndex(i)};        
         iChan = p.chanCodeWithPreprocess(i);
         chanName = p.chanNameWithPreprocess{i};    
         

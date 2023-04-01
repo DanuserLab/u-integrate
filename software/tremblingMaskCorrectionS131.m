@@ -102,7 +102,6 @@ end
 mask2 = currMask; 
 
 for fr = 2:(frmax-1)
-
     % weighted average
     % -> changed on 2017/10/04
     %wvec = [1 2 1];  
@@ -116,9 +115,11 @@ for fr = 2:(frmax-1)
     end
     % thresholding
     mask2{fr} = (tmp >= 0.5);
- 
+    mask2{fr} = mat2gray(mask2{fr});    % make output readable from ImageJ
 end
- 
+
+    mask2{1} = mat2gray(mask2{1});
+    mask2{frmax} = mat2gray(mask2{frmax}); 
 
 %% save
 masksOutDir = fullfile(outputDir);
