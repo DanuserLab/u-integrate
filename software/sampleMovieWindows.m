@@ -61,7 +61,7 @@ function movieData = sampleMovieWindows(movieData,paramsIn)
 % parfor.
 % 
 % Made it work for cropped movie previously done in Biosensors Package.
-% Qiongjing (Jenny) Zou, Jan 2023
+% Qiongjing (Jenny) Zou, Jan 2023 & April 2023
 %
 % Copyright (C) 2023, Danuser Lab - UTSouthwestern 
 %
@@ -121,7 +121,7 @@ if ~iscell(p.ChannelIndex), p.ChannelIndex={p.ChannelIndex}; end
 if ~iscell(p.OutputName), p.OutputName={p.OutputName}; end
 
 nFrames = movieData.nFrames_;
-imSize = movieData.imSize_;
+% imSize = movieData.imSize_; % does not work for cropped movie
 
 nChan = cellfun(@numel,p.ChannelIndex);
 nInput = sum(nChan);
@@ -205,7 +205,7 @@ parfor iFrame = 1:nFrames
     %Load the mask(s) to use first, so we can combine them and use this to
     %mask every channel.
     if isequal(n, movieData.imSize_(1))
-        currMask=true(imSize);
+        currMask=true(movieData.imSize_);
     else
         currMask = true([n, m]); % Make this process work for previous cropped movie - Jan 2023
     end
@@ -216,7 +216,7 @@ parfor iFrame = 1:nFrames
     
     %Go through each channel and sample it
     if isequal(n, movieData.imSize_(1))
-        stack2sample=zeros([imSize nInput]);
+        stack2sample=zeros([movieData.imSize_ nInput]);
     else
         stack2sample=zeros([n, m, nInput]); % Make this process work for previous cropped movie - Jan 2023
     end

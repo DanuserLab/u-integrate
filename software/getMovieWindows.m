@@ -178,7 +178,7 @@ function movieData = getMovieWindows(movieData,paramsIn)
 % Parallelized 'ConstantWidth', 'ConstantNumber', and 'ProtrusionBased'.
 %
 % Made it work for cropped movie previously done in Biosensors Package.
-% Qiongjing (Jenny) Zou, Jan 2023
+% Qiongjing (Jenny) Zou, Jan 2023 & April 2023
 %% ------ Parameters -------%%
 %
 % Copyright (C) 2023, Danuser Lab - UTSouthwestern 
@@ -360,7 +360,7 @@ end
 
 nFrames = movieData.nFrames_;
 nChan = numel(p.ChannelIndex);
-imSize = movieData.imSize_;
+% imSize = movieData.imSize_; % does not work for cropped movie
 
 %Get the mask directories and file names
 maskDir = movieData.processes_{iSegProc}.outFilePaths_(p.ChannelIndex);
@@ -377,6 +377,7 @@ dinfo = dir(inDir);
 imInfo = imfinfo(fullfile(dinfo(end).folder,dinfo(end).name));
 n = imInfo.Height;
 m = imInfo.Width;
+imSize = [n m];
 if isequal(n, movieData.imSize_(1))
     maskArray = movieData.getROIMask;
 else
