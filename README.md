@@ -1,6 +1,6 @@
 # Related paper
 
-- This repository is for initial distribution of the entire codes to generate the results in the manuscript, "[Inference of Granger-causal relations in molecular systems — a case study of the functional hierarchy among actin regulators in lamellipodia](https://www.biorxiv.org/content/10.1101/2021.05.21.445144v2)." at BioRxiv.
+- This repository is for initial distribution of the entire codes to generate the results in the manuscript, [**Granger-causal inference of the lamellipodial actin regulator hierarchy by live cell imaging without perturbation**](https://doi.org/10.1016/j.cels.2022.05.003), *Cell Systems*, 2022, 13(6):471-487.e8, written by Jungsik Noh, Tadamoto Isogai, Joseph Chi, Kushal Bhatt, [Gaudenz Danuser](https://www.danuserlab-utsw.org/).
 - This initial distribution presents all the Matlab scripts for the pipeline, including a user-friendly Graphical-User-Interface to run the image processing of 2-channel live cell videos, cross-correlation analysis with molecular activities near the cell edge, and the Granger-causality inference pipeline. 
 
 # Documents
