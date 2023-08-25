@@ -160,7 +160,7 @@ else
     elseif ismac
         system(sprintf('open %s',regexptranslate('escape',outputDir)));
     elseif isunix
-        status = system(sprintf('xdg-open "%s"',regexptranslate('escape',outputDir)));
+        status = system(sprintf('gio open "%s"',regexptranslate('escape',outputDir)));
         % If a non-zero integer is returned, then display a message box
         if(status)
             msgbox(sprintf('Results can be found under %s',regexptranslate('escape',outputDir)));
