@@ -10,7 +10,7 @@ function MD_GC_SPAR1ch_informationFlow(MD, iChan2, chan2Name, layerMax, ...
 % Modified from MD_GC_SPAR2ch_UDLRAllLag0ctrledGC_allBIC3steps.m 
 % J NOH. 2019/12/27.
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

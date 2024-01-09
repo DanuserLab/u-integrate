@@ -32,7 +32,7 @@ function mainFig = folderViewer(ML, varargin)
 %
 % Qiongjing (Jenny) Zou, Oct 2018
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

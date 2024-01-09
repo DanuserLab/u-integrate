@@ -82,7 +82,7 @@ function [fname0, MDpixelSize_, MDtimeInterval_, wmax, tmax, rawActmap, actmap_o
 % Jungsik Noh, 2017/05/23
 % Jungsik Noh, 2016/10/24
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

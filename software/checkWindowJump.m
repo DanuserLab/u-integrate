@@ -18,7 +18,7 @@ function [winTrack, x, y, jumpFr] = checkWindowJump(MD, varargin)
 %
 % Jungsik Noh, 2016/11/14
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -82,7 +82,7 @@ function mapXcorrCurvePermutation(MD, iChan1, iChan2, chan1Name, chan2Name, laye
 % Jungsik Noh, 2017/05/23     
 % Jungsik Noh, 2016/10/22
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

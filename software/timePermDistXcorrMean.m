@@ -4,7 +4,7 @@ function permXcorrMean = timePermDistXcorrMean(Actmap1, Actmap2, numPerm, lagMax
 %
 % Jungsik Noh, 2016/10/21
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

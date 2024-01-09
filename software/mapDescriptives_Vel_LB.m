@@ -36,7 +36,7 @@ function mapDescriptives_Vel_LB(MD, figuresDir, varargin)
 %
 % Jungsik Noh, 2018/01/29.
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

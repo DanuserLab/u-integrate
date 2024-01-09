@@ -48,7 +48,7 @@ while i<2*L
 % Mobile: +213 796 018049 
 % If you can improve this code furtherly, please let me know. Thanks
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

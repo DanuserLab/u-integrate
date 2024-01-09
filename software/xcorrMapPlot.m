@@ -11,7 +11,7 @@ function [xcorrMat, xcmap_fig] = xcorrMapPlot(ch1Actmap, ch2Actmap, ch1ActmapNam
 %
 % Jungsik Noh, 2016/08/31
 %
-% Copyright (C) 2023, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
