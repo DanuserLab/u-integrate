@@ -24,7 +24,7 @@ classdef WindowingPackage < Package
     
     methods
         function obj = WindowingPackage(owner,varargin)
-            % Constructor of class QFSMPackage
+            % Constructor of class WindowingPackage
             
             if nargin == 0
                 super_args = {};
