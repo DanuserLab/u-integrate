@@ -46,7 +46,7 @@ classdef GrangerCausalityAnalysisPackage < Package
     methods (Static)
         
         function name = getName()
-            name = 'Granger-Causality Analysis';
+            name = 'u-integrate'; % Updated 2024-05-03. The old name was 'Granger-Causality Analysis'.
         end
         
         function m = getDependencyMatrix(i,j)

@@ -82,7 +82,7 @@ classdef WindowingPackage < Package
         end
         
         function name = getName()
-            name = 'Windowing';
+            name = 'u-register'; % Updated 2024-05-03. The old name was Windowing.
         end
         
         function varargout = GUI(varargin)
