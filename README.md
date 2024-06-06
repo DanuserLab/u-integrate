@@ -1,4 +1,5 @@
 # u-integrate
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6374351.svg)](https://doi.org/10.5281/zenodo.6374351)
 
 u-integrate is previous named Granger-Causality Analysis or GCA. This distribution presents all the Matlab scripts for the pipeline used in the paper below, including a user-friendly Graphical-User-Interface to run the image processing of 2-channel live cell videos, cross-correlation analysis with molecular activities near the cell edge, and the Granger-causality inference pipeline. 
 
