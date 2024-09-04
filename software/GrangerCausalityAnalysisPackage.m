@@ -36,7 +36,7 @@ classdef GrangerCausalityAnalysisPackage < Package
                 outputDir = ip.Results.outputDir;
                 
                 super_args{1} = owner;               
-                super_args{2} = [outputDir filesep 'GrangerCausalityAnalysisPackage']; % but this outputDir is not used after run.
+                super_args{2} = [outputDir filesep 'uIntegratePackage']; % Updated 2024-9-3. The old save folder name was GrangerCausalityAnalysisPackage
             end
             % Call the superclass constructor
             obj = obj@Package(super_args{:}); 
