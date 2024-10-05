@@ -114,7 +114,7 @@ for j = 1:numMDs
     
     % logging output paths
     % Did not separate MD level output for channels.
-    outFilePaths{j} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+    outFilePaths{j} = [movieData.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep outName];
     mkClrDir(outFilePaths{j}); % this func does not clear subfolders! 
 
@@ -125,7 +125,7 @@ end
 process.setInFilePaths(allinFilePaths);
 
 % logging output paths - continue
-currOutputDirectory = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep outName];
     
 outFilePaths{numMDs+1} = currOutputDirectory;
@@ -192,7 +192,7 @@ end
 %% Summarize at the movieList level
 
 % outDirName for both of MD and ML
-outDirName = [filesep 'GrangerCausalityAnalysisPackage' ...
+outDirName = [filesep 'uIntegratePackage' ...
         filesep outName];
 
 for i = 1:numel(p.ChannelIndex)

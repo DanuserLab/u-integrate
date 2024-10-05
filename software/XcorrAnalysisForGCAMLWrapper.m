@@ -133,7 +133,7 @@ for j = 1:numMDs
     
     % logging output paths
     % Did not separate MD level output for channels.
-    outFilePaths{j} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+    outFilePaths{j} = [movieData.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep outName];
     mkClrDir(outFilePaths{j}); % this func does not clear subfolders! 
 
@@ -144,11 +144,11 @@ end
 process.setInFilePaths(allinFilePaths);
 
 % logging output paths - continue
-currOutputDirectory{1} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory{1} = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep ['XcorrAnalysis_', p.chanNameWithPreprocess{1}, '_Vel']];
-currOutputDirectory{2} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory{2} = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep ['XcorrAnalysis_', p.chanNameWithPreprocess{2}, '_Vel']];
-currOutputDirectory{3} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory{3} = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep ['XcorrAnalysis_', p.chanNameWithPreprocess{2}, '_', p.chanNameWithPreprocess{1}]];    
     
 outFilePaths{numMDs+1} = currOutputDirectory{1};
@@ -234,14 +234,14 @@ end
 % outDirName for both of MD and ML
 tmp = split(activityMapProc.outFilePaths_{1}, filesep);
 activityMapProc_MDoutName = tmp{end};
-analNameAcf = ['GrangerCausalityAnalysisPackage' filesep activityMapProc_MDoutName];
-analNameXcf = ['GrangerCausalityAnalysisPackage' filesep 'XcorrAnalysis'];
+analNameAcf = ['uIntegratePackage' filesep activityMapProc_MDoutName];
+analNameXcf = ['uIntegratePackage' filesep 'XcorrAnalysis'];
 
 % Xcorr with Vel
 for i = 1:numel(p.ChannelIndex)
     iChan = p.chanCodeWithPreprocess(i);
     chanName = p.chanNameWithPreprocess{i};
-    summaryDirName = ['GrangerCausalityAnalysisPackage' ...
+    summaryDirName = ['uIntegratePackage' ...
                     filesep ['XcorrAnalysis_', p.chanNameWithPreprocess{i}, '_Vel']];
     
     % MLsummary_XcorrCurvesVelAcf(ML, iChan1, iChan2, chan1Name, chan2Name, ...
@@ -259,7 +259,7 @@ iChan1 = p.chanCodeWithPreprocess(2);
 iChan2 = p.chanCodeWithPreprocess(1);
 chan1Name = p.chanNameWithPreprocess{2};
 chan2Name = p.chanNameWithPreprocess{1};
-summaryDirName = ['GrangerCausalityAnalysisPackage' ...
+summaryDirName = ['uIntegratePackage' ...
         filesep ['XcorrAnalysis_', p.chanNameWithPreprocess{2}, '_', p.chanNameWithPreprocess{1}]];
 
 MLsummary_XcorrCurvesVelAcf(movieList, iChan1, iChan2, chan1Name, chan2Name, ...

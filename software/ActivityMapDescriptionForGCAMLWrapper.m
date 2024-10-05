@@ -134,7 +134,7 @@ for j = 1:numMDs
     
     % logging output paths
     % Did not separate MD level output for channels.
-    outFilePaths{j} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+    outFilePaths{j} = [movieData.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep outName];
     mkClrDir(outFilePaths{j}); % this func does not clear subfolders! 
 
@@ -145,7 +145,7 @@ end
 process.setInFilePaths(allinFilePaths);
 
 % logging output paths - continue
-currOutputDirectory = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep 'Summary_ADFtest'];
     
 outFilePaths{numMDs+1} = currOutputDirectory;
@@ -221,21 +221,21 @@ for j = 1:numMDs
 end
 
 %% Summarize at the movieList level
-
-% outDirName for both of MD and ML
-MDoutDirName = [filesep 'GrangerCausalityAnalysisPackage' ...
-        filesep 'activityMapDescription']
-MLoutDirName = [filesep 'GrangerCausalityAnalysisPackage' ...
-        filesep 'Summary_ADFtest'];
-
-% MLsummary_ADFtest(ML, mapDescDirName, iChan, chanName, varargin)
-MLsummary_ADFtest(movieList, MDoutDirName, 0, 'Velocity', 'outDirName', MLoutDirName)
-        
-for i = 1:numel(p.ChannelIndex)
-    iChan = p.chanCodeWithPreprocess(i);
-    chanName = p.chanNameWithPreprocess{i};
+if p.adf == 1                           % if ADF is unchecked, do not summarize
+    % outDirName for both of MD and ML
+    MDoutDirName = [filesep 'uIntegratePackage' ...
+            filesep 'activityMapDescription']
+    MLoutDirName = [filesep 'uIntegratePackage' ...
+            filesep 'Summary_ADFtest'];
     
-    MLsummary_ADFtest(movieList, MDoutDirName, iChan, chanName, 'outDirName', MLoutDirName)
+    % MLsummary_ADFtest(ML, mapDescDirName, iChan, chanName, varargin)
+    MLsummary_ADFtest(movieList, MDoutDirName, 0, 'Velocity', 'outDirName', MLoutDirName)
+            
+    for i = 1:numel(p.ChannelIndex)
+        iChan = p.chanCodeWithPreprocess(i);
+        chanName = p.chanNameWithPreprocess{i};
+        
+        MLsummary_ADFtest(movieList, MDoutDirName, iChan, chanName, 'outDirName', MLoutDirName)
+    end
 end
-
 end

@@ -40,7 +40,13 @@ function [pvec, adfMap, indicStationairy] = nanAdfTestMap(map, mapName, smParam)
 figFlag = 'off';
 
 indNanRows = any(isnan(map'))';
-map2 = map(~indNanRows,:);
+%map2 = map(~indNanRows,:);
+
+% exclude windows with a constant TS
+vars = var(map, [], 2);
+indConstRows = (vars == 0);
+ind2 = indNanRows | indConstRows;
+map2 = map(~ind2,:);
 
 %map2 = knnimpute(map')';
 
@@ -62,13 +68,13 @@ adfIndex = (pvec < 0.1);           % stationary: 1, nonstationary: 0
 
 % Transform to original map's size
 adfIndexOrig = zeros(size(map, 1), 1);
-adfIndexOrig(~indNanRows) = adfIndex;
+adfIndexOrig(~ind2) = adfIndex;
 indicStationairy = nan(size(map, 1), 1);
-indicStationairy(~indNanRows) = adfIndex;
+indicStationairy(~ind2) = adfIndex;
 
 alphaIndex = (1 - 0.8*adfIndexOrig);    % Nonstationary -> alphaIndex=1 (shown)
 %
-alphaIndex(indNanRows) = 0;
+alphaIndex(ind2) = 0;
 
 filteredmap = smoothActivityMap(map, 'SmoothParam', smParam, 'UpSample', 1);
 adfMap = figure('Visible', figFlag);

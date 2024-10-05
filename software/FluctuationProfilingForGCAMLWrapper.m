@@ -137,7 +137,7 @@ for j = 1:numMDs
     
     outPathsMD = cell(numel(movieData.channels_), 1);   % per chanID analyzed
     for i = 1:numel(p.ChannelIndex)
-        outPathsMD{p.ChannelIndex(i)} = [movieData.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+        outPathsMD{p.ChannelIndex(i)} = [movieData.outputDirectory_ filesep 'uIntegratePackage' ...
                 filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{i}]];
         mkClrDir(outPathsMD{p.ChannelIndex(i)}); % this func does not clear subfolders!             
     end
@@ -150,10 +150,10 @@ process.setInFilePaths(allinFilePaths);
 
 % logging output paths - continue
 currOutputDirectory = cell(numel(movieData.channels_), 1);
-currOutputDirectory{1, 1} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory{1, 1} = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{1}]];
 mkClrDir(currOutputDirectory{1, 1});    
-currOutputDirectory{2, 1} = [movieList.outputDirectory_ filesep 'GrangerCausalityAnalysisPackage' ...
+currOutputDirectory{2, 1} = [movieList.outputDirectory_ filesep 'uIntegratePackage' ...
         filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{2}]];
 mkClrDir(currOutputDirectory{2, 1});        
     
@@ -257,7 +257,7 @@ end
 for i = 1:numel(p.ChannelIndex)
     % iChan = p.chanCodeWithPreprocess(i);
     chanName = p.chanNameWithPreprocess{i};
-    MDDirName = ['GrangerCausalityAnalysisPackage' ...
+    MDDirName = ['uIntegratePackage' ...
                     filesep ['FluctuationProfiling_', p.chanNameWithPreprocess{i}]];
     
     % MLsummary_FluctuationProfiling(ML, chanName, maxLayer, analNameDesc, outDirName, varargin)                

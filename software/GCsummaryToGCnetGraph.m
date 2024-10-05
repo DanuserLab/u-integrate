@@ -139,7 +139,14 @@ for l = 1:maxLayer
     wtVec = grp{l}.Edges.Weight;
     arSz = 20 + (100-20) * wtVec ./ 100;
     lnWd = 2 + (34 - 2) * wtVec ./ 100;
-    p.ArrowSize = arSz; p.LineWidth = lnWd;
+
+    % to fix weired error from GUI run (2024)
+    if ~isempty(arSz)
+        if isfinite(arSz) 
+            p.ArrowSize = arSz; p.LineWidth = lnWd;
+        end
+    end
+
     p.EdgeAlpha = 0.9;
     ax = gca;
     %ax.Position(3) = 0.6;
@@ -182,7 +189,14 @@ for l = 1:maxLayer
     wtVec = grp{l}.Edges.Weight;
     arSz = 20 + (100-20) * wtVec ./ 100;
     lnWd = 2 + (34 - 2) * wtVec ./ 100;
-    p.ArrowSize = arSz; p.LineWidth = lnWd;
+
+    % to fix weired error from GUI run (2024)
+    if ~isempty(arSz)
+        if isfinite(arSz) 
+            p.ArrowSize = arSz; p.LineWidth = lnWd;
+        end
+    end
+    
     p.EdgeAlpha = 0.9;
     ax = gca;
     %ax.Position(3) = 0.6;
