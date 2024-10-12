@@ -27,7 +27,7 @@ function varargout = GrangerCausalityAnalysisPackageGUI(varargin)
 
   % Comment out below, b/c I do not want to switch to the MDs as packageGUI's input, when use ML as input.
 % if nargin>0 && isa(varargin{1},'MovieList')
-%     varargout{1} = packageGUI('XcorrFluctuationPackage',[varargin{1}.getMovies{:}],...
+%     varargout{1} = packageGUI('GrangerCausalityAnalysisPackage',[varargin{1}.getMovies{:}],...
 %         varargin{2:end}, 'ML', varargin{1});
 % else
     varargout{1} = packageGUI('GrangerCausalityAnalysisPackage',varargin{:});

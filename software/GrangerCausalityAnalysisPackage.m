@@ -24,7 +24,7 @@ classdef GrangerCausalityAnalysisPackage < Package
     
     methods (Access = public)
         function obj = GrangerCausalityAnalysisPackage (owner,varargin)
-            % Constructor of class XcorrFluctuationPackage
+            % Constructor of class GrangerCausalityAnalysisPackage
             if nargin == 0
                 super_args = {};
             else
