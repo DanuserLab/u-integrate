@@ -72,10 +72,13 @@ u-integrate is previous named Granger-Causality Analysis or GCA. This distributi
 > <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/GCAoutput.png" /> 
 
 ## Software Updates
-
-Windowing has been renamed to **u-register**. Please select **u-register** from the analysis packages list to run the software.
-
-Granger-Causality Analysis has been renamed to **u-integrate**. Please select **u-integrate** from the analysis packages list to run the software.
+### New in Version 2.0 (Oct 25th, 2024):
+- Added the batch processing feature in u-integrate for analyzing multiple movie lists efficiently via the GUI.
+- The folder icons in the Control Panel - u-integrate are now fully functional, allowing users to directly access result folders for each step via the GUI.
+  
+### New in Version 1.1:
+- Windowing has been renamed to **u-register**. Please select **u-register** from the analysis packages list to run the software.
+- Granger-Causality Analysis has been renamed to **u-integrate**. Please select **u-integrate** from the analysis packages list to run the software.
 
 ## Contact
 
