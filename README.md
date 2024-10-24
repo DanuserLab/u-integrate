@@ -36,7 +36,7 @@ u-integrate is previous named Granger-Causality Analysis or GCA. This distributi
 
 - Launch the GUI using the following command in Matlab. Then click 'New' to create movieData objects for individual videos. 
 ```
->> u_quantifyI()
+>> u_quantify()
 ```
 > <img src="/code/GrangerCausalityAnalysis/Doc/GUI_figures/movieSelectorGUI_newMD.png" height="500"/> 
 
