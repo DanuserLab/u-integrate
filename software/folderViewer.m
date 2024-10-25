@@ -98,6 +98,22 @@ uicontrol(moviePanel,'Style','text','Position',[10 hPosition 40 20],...
 % Create popupmenu if input is a MovieList, else  list the movie path
 
 folderPaths = userData.ML.processes_{procId}.outFilePaths_;
+
+% To deal with case that folderPaths has nested cell array 
+% by Qiongjing (Jenny) Zou, Oct 2024
+concatenatedPaths = {};
+for i = 1:length(folderPaths)
+    if iscell(folderPaths{i})
+        % Flatten the nested cell array (whether it's 1xN or Nx1) and concatenate
+        concatenatedPaths = [concatenatedPaths; folderPaths{i}(:)];
+    else
+        % If the element is not a cell array, just append it directly
+        concatenatedPaths = [concatenatedPaths; folderPaths(i)];
+    end
+end
+% Ensure concatenatedPaths is a row vector (1 x n)
+folderPaths = concatenatedPaths(:).';
+
 folderIndex=0:numel(folderPaths);
 
 
@@ -154,7 +170,24 @@ if isempty(userData.procId)
     errordlg('Please choose a folder to view result from the dropdown options.')
 else
     % Use the OS-specific command to open result in exploration window
-    outputDir = userData.ML.processes_{userData.procId}.outFilePaths_{props{1}(props{2})};
+    folderPath = userData.ML.processes_{userData.procId}.outFilePaths_;
+    
+    % To deal with case that folderPath has nested cell array
+    % by Qiongjing (Jenny) Zou, Oct 2024
+    concatenatedPaths = {};
+    for i = 1:length(folderPath)
+        if iscell(folderPath{i})
+            % Flatten the nested cell array (whether it's 1xN or Nx1) and concatenate
+            concatenatedPaths = [concatenatedPaths; folderPath{i}(:)];
+        else
+            % If the element is not a cell array, just append it directly
+            concatenatedPaths = [concatenatedPaths; folderPath(i)];
+        end
+    end
+    % Ensure concatenatedPaths is a row vector (1 x n)
+    folderPath = concatenatedPaths(:).';
+
+    outputDir = folderPath{props{1}(props{2})};
     if ispc
         winopen(outputDir);
     elseif ismac
