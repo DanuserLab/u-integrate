@@ -25,7 +25,7 @@ function phaseDescriptives_MaxMinVel_OneChan(MD, iChan, maxLayer, chanName, ...
 % Jungsik Noh, 2017/05/23
 % Jungsik Noh, 2017/04/05
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

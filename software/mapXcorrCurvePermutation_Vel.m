@@ -73,7 +73,7 @@ function mapXcorrCurvePermutation_Vel(MD, iChan1, chan1Name, layerMax, figuresDi
 % Jungsik Noh, 2017/05/23  
 % Jungsik Noh, 2016/10/22
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -1,7 +1,7 @@
 function [ out ] = isProcessOrMovieList( x )
 %isProcessOrMovieList True if input is a Process or MovieList instance
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

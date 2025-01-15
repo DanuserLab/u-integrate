@@ -8,7 +8,7 @@ function [protMask1, retMask1, filteredmap] = phaseMaskingInternal(MD, smParamTh
 % smoothed activity map input. 
 % Jungsik Noh, 2017/03/30
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

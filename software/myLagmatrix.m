@@ -2,7 +2,7 @@ function laggedTScolMat = myLagmatrix(TScolMat, lagOrder)
 % lagged TS column matrix with intial NaN's imputed by means
 %
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -16,7 +16,7 @@ function [arMdlAvBICmap, arMdlAvBICcurve,  ...
 % J Noh, 2019/04/12. Can select BIC option via 'infoCriterion'.
 % J Noh, 2019/04/12. Modified from adjAR_...m
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 

@@ -74,7 +74,7 @@ function mapDescriptives_OneChan(MD, iChan, maxLayer, chanName, chanTitle, figur
 % Jungsik Noh, 2017/05/23
 % Jungsik Noh, 2016/10/18
 %
-% Copyright (C) 2024, Danuser Lab - UTSouthwestern 
+% Copyright (C) 2025, Danuser Lab - UTSouthwestern 
 %
 % This file is part of GrangerCausalityAnalysisPackage.
 % 
