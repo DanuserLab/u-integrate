@@ -1,0 +1,998 @@
+function MD_iGC_SPAR4ch_Approach3(MD, iChan1, iChan2, iChan3, iChan4, chan1Name, chan2Name, chan3Name, chan4Name, layerMax, ...
+    figuresDir, twlagMax, twlagMaxReg, varargin)
+% MD_iGC_SPAR4ch() COMPUTE P-values for instantaneous Granger-Causality (iGC) 
+% from Chan1 to Chan2 given Chan3 and Chan4 in each window. 
+%Anteneh A Godana updated 4th chanel 6/20/2023
+% Regression Model:%
+%   iChan2_t ~ lagged iChan2_t + lagged iChan1_t + lagged iChan3_t + lagged iChan4_t
+%   (AR+Reg+control)
+ 
+tlagMax = twlagMax(1);
+wlagMax = twlagMax(2);
+tlagMaxReg = twlagMaxReg(1);
+wlagMaxReg = twlagMaxReg(2);        
+
+if (wlagMaxReg > wlagMax); wlagMaxReg = wlagMax; end
+
+
+pcorrLagMax0 = floor(MD.nFrames_/10);
+
+ip = inputParser;
+
+ip.addParameter('figFlag', 'off');
+ip.addParameter('impute', true);
+ip.addParameter('WithN', false);
+ip.addParameter('parpoolNum', 4);
+
+ip.addParameter('omittedWindows', []);
+ip.addParameter('Folding', false);
+ip.addParameter('subFrames', []);
+ip.addParameter('movingAvgSmoothing', false);
+ip.addParameter('partialCorrLagMax', pcorrLagMax0)
+ip.addParameter('movMedFrameSize', nan);  
+
+ip.addParameter('CommonFactorNormAddChVec', {NaN, NaN, NaN, NaN});
+ip.addParameter('factoranMethod', 33);
+ip.addParameter('infoCriterion', 'AIC');
+ip.addParameter('baseOfRatioVec', [NaN, NaN, NaN, NaN]);  
+ip.addParameter('EWMA', 1);         
+
+ip.parse(varargin{:});
+p = ip.Results;
+set(groot,'defaultLegendAutoUpdate','off')
+
+%% figuresDir setup
+% figuresDir = fullfile(outDir, figDirName)           %% input
+if ~isfolder(figuresDir)
+    mkdir(figuresDir);
+end
+
+tmptext = ['MD_GC_4wSPAR4ch_', 'inputParser.mat'];
+save(fullfile(figuresDir, tmptext), 'p')
+
+
+%% Getting Maps from channels 1, 2, 3, and 4
+
+disp(chan1Name)
+
+[~, ~, MDtimeInterval_, wmax, tmax, ~, ~, imActmap1] ...
+    = mapOutlierImputation(MD, iChan1, layerMax+1, 'impute', p.impute, ...
+    'omittedWindows', p.omittedWindows, 'WithN', p.WithN, 'subFrames', p.subFrames, ...
+    'movingAvgSmoothing', p.movingAvgSmoothing, 'movMedFrameSize', p.movMedFrameSize, ...
+    'CommonFactorNormAddCh', p.CommonFactorNormAddChVec{1}, 'factoranMethod', p.factoranMethod, ...
+    'baseOfRatio', p.baseOfRatioVec(1), 'EWMA', p.EWMA, ...
+    'figuresDir', figuresDir, 'chanName', chan1Name);
+
+
+disp(chan2Name)
+
+[~, ~, ~, ~, ~, ~, ~, imActmap2] ...
+    = mapOutlierImputation(MD, iChan2, layerMax+1, 'impute', p.impute, ...
+    'omittedWindows', p.omittedWindows, 'WithN', p.WithN, 'subFrames', p.subFrames, ...
+    'movingAvgSmoothing', p.movingAvgSmoothing, 'movMedFrameSize', p.movMedFrameSize, ...
+    'CommonFactorNormAddCh', p.CommonFactorNormAddChVec{2}, 'factoranMethod', p.factoranMethod, ...
+    'baseOfRatio', p.baseOfRatioVec(2), 'EWMA', p.EWMA, ...
+    'figuresDir', figuresDir, 'chanName', chan2Name);
+
+disp(chan3Name)
+
+[~, ~, ~, ~, ~, ~, ~, imActmap3] ...
+    = mapOutlierImputation(MD, iChan3, layerMax+1, 'impute', p.impute, ...
+    'omittedWindows', p.omittedWindows, 'WithN', p.WithN, 'subFrames', p.subFrames, ...
+    'movingAvgSmoothing', p.movingAvgSmoothing, 'movMedFrameSize', p.movMedFrameSize, ...
+    'CommonFactorNormAddCh', p.CommonFactorNormAddChVec{3}, 'factoranMethod', p.factoranMethod, ...
+    'baseOfRatio', p.baseOfRatioVec(3), 'EWMA', p.EWMA, ...
+    'figuresDir', figuresDir, 'chanName', chan3Name);
+
+disp(chan4Name)
+
+[~, ~, ~, ~, ~, ~, ~, imActmap4] ...
+    = mapOutlierImputation(MD, iChan4, layerMax+1, 'impute', p.impute, ...
+    'omittedWindows', p.omittedWindows, 'WithN', p.WithN, 'subFrames', p.subFrames, ...
+    'movingAvgSmoothing', p.movingAvgSmoothing, 'movMedFrameSize', p.movMedFrameSize, ...
+    'CommonFactorNormAddCh', p.CommonFactorNormAddChVec{4}, 'factoranMethod', p.factoranMethod, ...
+    'baseOfRatio', p.baseOfRatioVec(4), 'EWMA', p.EWMA, ...
+    'figuresDir', figuresDir, 'chanName', chan4Name);
+
+
+fsaveName0 = ['frCh', num2str(iChan1), 'toCh', num2str(iChan2), 'givenCh', num2str(iChan3), 'Ch', num2str(iChan4)];
+disp(fsaveName0)
+% 2021/02/11
+fsaveName1 = ['fr_', chan1Name, '_to_', chan2Name, '_given_', chan3Name, '_',chan4Name];
+disp(fsaveName1)
+if layerMax > 1
+    if numel(imActmap1) == 1
+        for indL = 2:layerMax
+            imActmap1{indL} = imActmap1{1};
+        end
+    end
+    if numel(imActmap2) == 1
+        for indL = 2:layerMax
+            imActmap2{indL} = imActmap2{1};
+        end
+    end
+    if numel(imActmap3) == 1
+        for indL = 2:layerMax
+            imActmap3{indL} = imActmap3{1};
+        end
+    end
+    if numel(imActmap4) == 1
+        for indL = 2:layerMax
+            imActmap4{indL} = imActmap4{1};
+        end
+    end
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% due to parfor
+%if isempty(gcp('nocreate')); parpool('local', p.parpoolNum); end
+%%  global nanK, nanK2
+nanK = 0;
+
+for indL = 1:layerMax
+    map = imActmap1{indL};
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK = max(nanK, map_ik);
+end
+
+for indL = 1:layerMax
+    map = imActmap2{indL};
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK = max(nanK, map_ik);
+end
+
+for indL = 1:layerMax
+    map = imActmap3{indL};
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK = max(nanK, map_ik);
+end
+
+for indL = 1:layerMax
+    map = imActmap4{indL};
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK = max(nanK, map_ik);
+end
+
+disp(['nanK: ', num2str(nanK)])
+%%
+nanK2 = 0;
+
+for indL = 1:layerMax
+    map = flip(imActmap1{indL}, 2);
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK2 = max(nanK2, map_ik);
+end
+
+for indL = 1:layerMax
+    map = flip(imActmap2{indL}, 2);
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK2 = max(nanK2, map_ik);
+end
+
+for indL = 1:layerMax
+    map = flip(imActmap3{indL}, 2);
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK2 = max(nanK2, map_ik);
+end
+
+for indL = 1:layerMax
+    map = flip(imActmap4{indL}, 2);
+    map_ik = find(~all(isnan(map)), 1) - 1;
+    if isempty(map_ik)
+        map_ik = 0;
+    end
+    nanK2 = max(nanK2, map_ik);
+end
+
+disp(['nanK2: ', num2str(nanK2)])
+
+%%
+%tic
+winch2Pvec = cell(layerMax, 1);   
+winch1Pvec = cell(layerMax, 1);    
+
+modelIndVarsMat = cell(layerMax, 1);
+modelCoefMat = cell(layerMax, 1);
+
+fmdlSlctn = cell(layerMax, 1);
+Jw0s = cell(layerMax, 1); Jw1s = cell(layerMax, 1);
+Pw01s = cell(layerMax, 1); Pw11s = cell(layerMax, 1);
+Pw02s= cell(layerMax, 1); 
+Pw12s= cell(layerMax, 1); 
+Pw13s= cell(layerMax, 1); 
+Qw0s = cell(layerMax, 1); 
+resiMap = cell(layerMax, 1); 
+yhatFMap = cell(layerMax, 1);
+yhatRMap = cell(layerMax, 1);
+winFits = cell(layerMax, 1);
+
+
+tmp = nmultichoosek(1:tlagMax, 1+1);
+ch2PvecMat = flip(tmp, 2);
+ch1PvecMat = ch2PvecMat(1:end, :);      
+
+
+%%
+for indL = 1:layerMax
+    
+    % prepare maps, pre-Parsing
+    % only adjacent layers (up, down)
+    mapy = cell(3,1); mapx = cell(3,1); mapz = cell(3,1); mapv = cell(3,1);
+    
+    mapy{2} = imActmap2{indL};
+    mapy{1} = nan(size(mapy{2})); mapy{3} = nan(size(mapy{2}));
+    if (iChan2 ~= 0) && (indL > 1); mapy{1} = imActmap2{indL-1}; end    % up
+    if (iChan2 ~= 0); mapy{3} = imActmap2{indL+1}; end                  % down
+    
+    mapx{2} = imActmap1{indL};
+    mapx{1} =nan(size(mapx{2})); mapx{3} = nan(size(mapx{2}));
+    if (iChan1 ~= 0) && (indL > 1); mapx{1} = imActmap1{indL-1}; end    % up
+    if (iChan1 ~= 0); mapx{3} = imActmap1{indL+1}; end                  % down
+    
+    mapz{2} = imActmap3{indL};
+    mapz{1} = nan(size(mapz{2})); mapz{3} = nan(size(mapz{2}));
+    if (iChan3 ~= 0) && (indL > 1); mapz{1} = imActmap3{indL-1}; end    % up
+    if (iChan3 ~= 0); mapz{3} = imActmap3{indL+1}; end                  % down
+    
+    mapv{2} = imActmap4{indL};
+    mapv{1} = nan(size(mapv{2})); mapv{3} =nan(size(mapv{2}));
+    if (iChan4 ~= 0) && (indL > 1); mapv{1} = imActmap4{indL-1}; end    % up
+    if (iChan4 ~= 0); mapv{3} = imActmap4{indL+1}; end                  % down
+    
+    
+    if  (nanK > 0) || (nanK2 > 0)
+        for k = 1:3
+            mapx{k} = mapx{k}(:, nanK+1:tmax-nanK2);
+            mapy{k} = mapy{k}(:, nanK+1:tmax-nanK2);
+            mapz{k} = mapz{k}(:, nanK+1:tmax-nanK2);
+            mapv{k} = mapv{k}(:, nanK+1:tmax-nanK2);
+        end
+    end
+    
+    % standardization 
+    zmapy = cell(3,1); zmapx = cell(3,1); zmapz = cell(3,1); zmapv = cell(3,1);
+    for k = 1:3
+        zmapx{k} = zscore(mapx{k}')';
+        zmapy{k} = zscore(mapy{k}')';
+        zmapz{k} = zscore(mapz{k}')';
+        zmapv{k} = zscore(mapv{k}')';
+    end
+%%
+        
+    
+        [arMdlAvBICmap, arMdlAvBICcurve, reducedMdlAvBICmap, reducedMdlAvBICcurve, ...
+            fullMdlAvBICmap, fullMdlAvBICcurve, Jw0, Jw1, ...
+    Pw01, Pw11,  Pw02, Pw12, Pw13,Qw0, modelIndVars_mat, modelCoef_mat, winFits_mat, resi_mat, yhatF_mat, yhatR_mat] = ...
+            SPAR_4ch_mdlSlctn_iGC_3steps_Approach3(zmapx, zmapy, zmapz, zmapv, tlagMax, wlagMax, ...
+            tlagMaxReg, wlagMaxReg, ch1PvecMat, p.infoCriterion);
+
+        fmdlSlctn{indL} = figure('Visible', p.figFlag);
+        subplot(3,2,1)
+        plot(arMdlAvBICmap')
+        title([num2str(indL), 'L ', 'Per-window ICs'])
+        xlabel('Model orders')
+        ylabel('Avg IC')
+
+        subplot(3,2,2)
+        plot(arMdlAvBICcurve)
+        title([num2str(indL), 'L ', 'AR Mdl: Jw0 Jw1= ', num2str(Jw0), ', ', num2str(Jw1)])
+        xlabel('Model orders')
+        ylabel('Avg IC')  
+        
+       subplot(3,2,5)
+        plot(fullMdlAvBICmap')
+        title([num2str(indL), 'L ', 'Per-window ICs'])
+        xlabel('Model orders')
+        ylabel('Avg IC')
+
+        subplot(3,2,6)
+        plot(fullMdlAvBICcurve)
+        title([num2str(indL), 'L ', 'Full Mdl: Qw0= ', num2str(Qw0)])
+        xlabel('Model orders')
+        ylabel('Avg IC')      
+        subplot(3,2,3)
+        plot(reducedMdlAvBICmap')
+        title([num2str(indL), 'L ', 'Per-window ICs'])
+        xlabel('Model orders')
+        ylabel('Avg IC')
+
+        subplot(3,2,4)
+        plot(reducedMdlAvBICcurve)
+        title([num2str(indL), 'L ', 'Ctrl Mdl: Pw01 Pw11 Pw02 Pw12  Pw13   = ', num2str(Pw01), ', ', num2str(Pw11), ', ',num2str(Pw02), ', ', num2str(Pw12),', ', num2str(Pw13),])
+        xlabel('Model orders')
+        ylabel('Avg IC')    
+
+        saveas(fmdlSlctn{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_fmdlSlctn.png']), 'png')
+        saveas(fmdlSlctn{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_fmdlSlctn.fig']), 'fig')
+%%
+        modelIndVarsMat{indL} = modelIndVars_mat;
+        modelCoefMat{indL} = modelCoef_mat;
+        Jw0s{indL} = Jw0;
+        Jw1s{indL} = Jw1;
+        Qw0s{indL} = Qw0;
+        Pw01s{indL} = Pw01;
+        Pw11s{indL} = Pw11;
+        Pw02s{indL} = Pw02;
+        Pw12s{indL} = Pw12;
+        Pw13s{indL} = Pw13;
+        resiMap{indL} = resi_mat;
+        yhatFMap{indL} = yhatF_mat;
+        yhatRMap{indL} = yhatR_mat;
+        winFits{indL} = winFits_mat;
+end
+    %% close figures
+    pause(0.5)
+    for indL = 1:layerMax
+        close(fmdlSlctn{indL})
+    end
+    %%  plot model selection
+    figwinIndMat{indL} = cell(layerMax, 1);
+    %figwinCoefMat = cell(layerMax, 1);
+    xtickvec = [(1:5)*tlagMax, 5*tlagMax + (1:15)*(tlagMax+1)];
+
+    for indL = 1:layerMax
+        figwinIndMat{indL} = figure('Visible', p.figFlag);
+        figtmp = imagesc(modelIndVarsMat{indL});
+        figtmp.AlphaData = 1 - isnan(modelIndVarsMat{indL});
+        axis xy
+        ax = gca;
+        ax.XTick = xtickvec;
+        avgArmaxLag = round(mean(winch2Pvec{indL}, 'omitnan'), 0);
+        avgRegLag = round(mean(winch1Pvec{indL}, 'omitnan'), 0);
+        avgMaxOrder = [Jw0s{indL}, Jw1s{indL}, Pw01s{indL}, Pw11s{indL},Pw02s{indL}, Pw12s{indL},Pw13s{indL},Qw0s{indL}];
+        hold on
+        for i = xtickvec
+            line([i+0.5,i+0.5], [1,wmax])
+        end
+        title({['AR/Ctrl/Reg features chosen by IC - '];[fsaveName0, '-', num2str(indL), 'L']; ...
+            ['Orders: ', sprintf('%.0f ', avgMaxOrder)]})
+        ylabel('Windows')
+        ax = gca;
+        ax.FontSize = 10;
+        saveas(figwinIndMat{indL}, fullfile(figuresDir, [fsaveName0, '_', num2str(indL), 'L_modelIndVarsMat.png']), 'png')
+    end
+ %%
+%% Boxplot for Regression order with Customized Whiskers and Jet Colormap
+figwinIndMatRegression = figure('Visible', p.figFlag);
+
+% Concatenate Regression data from all layers
+allQw0 = cell(layerMax, 1);
+
+for indL = 1:layerMax
+    allQw0{indL} = Qw0s{indL}(:);
+end
+
+% Combine Regression data for boxplot
+combinedRegressionData = cell2mat(allQw0);
+
+% Create a matrix with NaN-padding to handle different sizes
+maxLen = max(cellfun(@length, allQw0));
+paddedData = cell2mat(cellfun(@(x) [x; nan(maxLen - length(x), 1)], allQw0, 'UniformOutput', false));
+
+% Create positions for the boxplot
+groupPositions = repmat(1:layerMax, 1, maxLen);
+
+% Create labels for each box
+boxLabels = cell(1, layerMax * maxLen);
+for i = 1:layerMax
+    for j = 1:maxLen
+        boxLabels{(i - 1) * maxLen + j} = sprintf('Layer %d', i);
+    end
+end
+
+% Boxplot with customized whisker properties and Jet colormap
+boxplot(paddedData(:), groupPositions(:), ...
+    'Widths', 0.4, 'Symbol', 'o', 'OutlierSize', 4, 'Labels', boxLabels, ...
+    'Whisker', 2, 'Colors', jet(layerMax)); % Set Whisker length and Jet colormap
+
+title('Regression order chosen by IC - All Layers')
+xlabel('Layers')
+ylabel('Lag Order') % Add this line to set the y-axis label
+
+ytickvec = get(gca, 'YTick');
+set(gca, 'YTickLabel', arrayfun(@(x) sprintf('%.0f', x), ytickvec, 'UniformOutput', false));
+
+% Save Regression boxplot as an image in the specified folder
+saveas(figwinIndMatRegression, fullfile(figuresDir, [fsaveName0, '_Regression_order_chosen_jet.png']), 'png');
+
+   
+%%   modelCoefMat
+
+figwinCoefMat = cell(layerMax, 1);
+for indL = 1:layerMax
+    figwinCoefMat{indL} = figure('Visible', p.figFlag);
+    inputmap = atan(modelCoefMat{indL});
+    figtmp = imagesc(inputmap);
+    figtmp.AlphaData = 1 - isnan(inputmap);
+    colormap(jet);
+    colorbar
+    maxval = max(abs(inputmap(:)));
+    if ~isnan(maxval)
+        caxis([-maxval, maxval]);
+    end
+    axis xy
+    ax = gca;
+    ax.XTick = xtickvec;
+    avgArmaxLag = round(mean(winch2Pvec{indL}, 'omitnan'), 0);
+    avgRegLag = round(mean(winch1Pvec{indL}, 'omitnan'), 0);
+    avgMaxOrder = [Jw0s{indL}, Jw1s{indL}, Pw01s{indL}, Pw11s{indL},Pw02s{indL}, Pw12s{indL},Pw13s{indL},Qw0s{indL}];
+    hold on
+    for i = xtickvec
+        line([i+0.5,i+0.5], [1,wmax])
+    end
+    title({['AR/Ctrl/Reg features chosen by IC - '];[fsaveName0, '-', num2str(indL), 'L']; ...
+        ['Order: ', sprintf('%.0f ', avgMaxOrder)]})
+    ylabel('Windows')
+    ax = gca;
+    ax.FontSize = 10;
+    saveas(figwinCoefMat{indL}, fullfile(figuresDir, [fsaveName0, '_', num2str(indL), 'L_figwinCoefMat.png']), 'png')
+end
+
+save(fullfile(figuresDir, [fsaveName0, '_modelIndVarsMat_Layers.mat']), 'modelIndVarsMat')
+save(fullfile(figuresDir, [fsaveName0, '_modelCoefMat_Layers.mat']), 'modelCoefMat')
+save(fullfile(figuresDir, [fsaveName0, '_chosenOrder_Layers.mat']), 'Pw01s', 'Pw11s', 'Pw02s', 'Pw12s', 'Pw13s','Qw0s')
+%%  plot mean curve of modelCoef
+figCoefcurve = cell(layerMax, 1);
+tickMax = xtickvec(end);
+
+for indL = 1:layerMax
+    figCoefcurve{indL} = figure('Visible', p.figFlag);
+    
+    inputmap = modelCoefMat{indL};
+    coefCurve = mean(inputmap, 1, 'omitnan');
+    coefAR = coefCurve;
+    coefAR(xtickvec(5)+1:xtickvec(end)) = NaN;
+    bar(coefAR, 'k');
+    hold on
+    coefCtrl = coefCurve;
+    coefCtrl(1:xtickvec(1+2*wlagMax+2)) = NaN;
+    coefCtrl(xtickvec(end-1)+1:tickMax) = NaN;
+    bar(coefCtrl, 'b');
+    coefReg = coefCurve;
+    coefReg(1:xtickvec(end-1)) = NaN;
+    bar(coefReg, 'r');
+    
+    h = refline([0,0]);
+    h.Color = [.3 .3 .3];
+    set(gca, 'XTick', xtickvec);
+    for i = xtickvec
+        l = line([i+0.5,i+0.5], ylim);
+        l.Color = [.3 .3 .3];
+    end
+    
+    avgArmaxLag = round(mean(winch2Pvec{indL}, 'omitnan'), 0);
+    avgRegLag = round(mean(winch1Pvec{indL}, 'omitnan'), 0);
+    avgMaxOrder = [Jw0s{indL}, Jw1s{indL}, Pw01s{indL}, Pw11s{indL},Pw02s{indL}, Pw12s{indL},Pw13s{indL},Qw0s{indL}];
+    
+    title({['AR/Ctrl/Reg features chosen by IC - '];[ fsaveName0, '-', num2str(indL), 'L']; ...
+        ['Order: ', sprintf('%.0f ',avgMaxOrder)]})
+    ylabel('Mean coef')
+    ax = gca;
+    ax.FontSize = 10;
+    
+    saveas(figCoefcurve{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_figCoefcurve.png']), 'png')
+end
+
+% Close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(figCoefcurve{indL})
+end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+save(fullfile(figuresDir, ['GC_', fsaveName1, '_winFits_Layers.mat']), 'winFits', ...
+    'resiMap','yhatFMap','yhatRMap')
+
+
+%% draw outcome
+%% draw ECDF of Fpval, LRTpval, normalityTest
+figecdf = cell(layerMax, 1);
+for indL = 1:layerMax
+    figecdf{indL} = figure('Visible', p.figFlag);
+    Fpvec = winFits{indL}(:, 8);
+    LRTpvec = winFits{indL}(:, 10);
+    KSpvec = winFits{indL}(:, 5);
+    LBpvec = winFits{indL}(:, 12);
+    if ~all(isnan(Fpvec))
+        [f,x] = ecdf(Fpvec);
+        stairs(x, f)
+        
+        hold on
+        
+        [f,x] = ecdf(LRTpvec);
+        stairs(x, f, ':')
+        [f,x] = ecdf(KSpvec);
+        stairs(x, f)
+        [f,x] = ecdf(LBpvec);
+        stairs(x, f)
+    else
+        x = nan; f = nan; stairs(x, f)
+    end
+    legend('F-test', 'LRT', 'resiNormality', 'LB-test', 'Location', 'southeast', 'Orientation', 'vertical');
+    
+    h = refline([1, 0]);
+    %h.Color = 'k';
+    h = line([0.05, 0.05], [0, 1]);
+    h.Color = 'red';
+    
+    winProp = sum(Fpvec < 0.05) / sum(~isnan(Fpvec));
+    medFPval = median(Fpvec, 'omitnan');
+    
+    subtitle0 = ['medianPval: ', num2str(round(medFPval, 3)), ', prop of <5%: ', num2str(round(winProp, 2))];
+    title0 = ['GC P-values from ', chan1Name, ' to ', chan2Name, ' -', num2str(indL), 'L'];
+    title({title0; subtitle0})
+    
+    xlabel('P-value')
+    ylabel('Cumulative Relative Frequency')
+    
+    ax = gca;
+    ax.FontSize = 13;
+    
+    % save
+    saveas(figecdf{indL}, fullfile(figuresDir, [fsaveName0, '_', num2str(indL), 'L_GCecdf.png']), 'png')
+end 
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(figecdf{indL})
+end
+
+
+%% paired Activity maps
+smParam = 1;        % since 2019/05/04. After SNR
+
+figPairedAct = cell(layerMax, 1);
+
+for indL = 1:layerMax
+    
+    Xmap = imActmap1{indL};
+    Ymap = imActmap2{indL};
+    
+    if ~all(isnan(Xmap(:))) && ~all(isnan(Ymap(:)))
+        
+        smXmap = smoothActivityMap(Xmap, 'SmoothParam', smParam, 'UpSample', 1);
+        smYmap = smoothActivityMap(Ymap, 'SmoothParam', smParam, 'UpSample', 1);
+        
+        figPairedAct{indL} = figure('Visible', p.figFlag, 'Position', [317 330 7*80*2 420]);
+        
+        subplot(1,3,1);
+        figtmp = imagesc(smXmap, quantile(smXmap(:), [0.001, 0.999]));
+        title([chan1Name, '-', num2str(indL), 'L'])
+        colormap(jet); colorbar
+        figtmp.AlphaData = 1-isnan(Xmap);
+        axis xy;xlabel('Time (s)');ylabel('Window')
+        ax = gca;
+        curTick = ax.XTick;
+        ax.XTickMode = 'manual';
+        ax.XTick = curTick+1;
+        ax.XTickLabel = (curTick)*MDtimeInterval_;
+        
+        %
+        subplot(1,3,2);
+        figtmp = imagesc(smYmap, quantile(smYmap(:), [0.001, 0.999]));
+        title([chan2Name, '-', num2str(indL), 'L'])
+        colormap(jet); colorbar
+        figtmp.AlphaData = 1-isnan(Ymap);
+        axis xy;xlabel('Time (s)');%ylabel('Window')
+        ax = gca;
+        curTick = ax.XTick;
+        ax.XTickMode = 'manual';
+        ax.XTick = curTick+1;
+        ax.XTickLabel = (curTick)*MDtimeInterval_;
+        
+        %
+        Fpvec = winFits{indL}(:, 8);
+        subplot(1,3,3);
+        sigGC = -log10(Fpvec);
+        ind1 = (sigGC > -log10(0.05));
+        sigGC1 = sigGC;
+        sigGC1(~ind1) = NaN;
+        sigGC0 = sigGC;
+        sigGC0(ind1) = NaN;
+        
+        b = barh(1:wmax, sigGC0, 'b');
+        ax = gca; ax.YLim = [1, wmax];
+        axis xy
+        hold on
+        b = barh(1:wmax, sigGC1, 'r');
+        ax = gca; ax.YLim = [1, wmax];
+        
+        h = line([-log10(0.05), -log10(0.05)], [1, wmax]);
+        ptick = [0.05, 0.01, 0.001, 0.0001];
+        logptick = -log10(ptick);
+        ax = gca;
+        ax.XLim = [0, 5];
+        ax.XTickMode = 'manual';
+        ax.XTick = logptick;
+        ax.XTickLabel = ptick;    
+        xlabel('P-value (-log10)')
+        
+        ax = gca; ax.FontSize = 13;
+        
+    else
+        figPairedAct{indL} = figure('Visible', p.figFlag, 'Position', [317 330 7*80*2 420]);
+    end
+end
+
+%% saveas
+for indL = 1:layerMax
+    saveas(figPairedAct{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_PvalPairedMaps.png']), 'png')
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(figPairedAct{indL})
+end
+
+%% paired Activity maps (smoothed one for visualization purpose)
+
+smParam = 0.8;     
+
+figPairedAct2 = cell(layerMax, 1);
+
+for indL = 1:layerMax
+    
+    Xmap = imActmap1{indL};
+    Ymap = imActmap2{indL};
+    
+    if ~all(isnan(Xmap(:))) && ~all(isnan(Ymap(:)))
+        
+        smXmap = smoothActivityMap(Xmap, 'SmoothParam', smParam, 'UpSample', 1);
+        smYmap = smoothActivityMap(Ymap, 'SmoothParam', smParam, 'UpSample', 1);
+        
+        figPairedAct2{indL} = figure('Visible', p.figFlag, 'Position', [317 330 7*80*2 420]);
+        
+        subplot(1,3,1);
+        figtmp = imagesc(smXmap, quantile(smXmap(:), [0.001, 0.999]));
+        title([chan1Name, '-', num2str(indL), 'L'])
+        colormap(jet); colorbar
+        figtmp.AlphaData = 1-isnan(Xmap);
+        axis xy;xlabel('Time (s)');ylabel('Window')
+        ax = gca;
+        curTick = ax.XTick;
+        ax.XTickMode = 'manual';
+        ax.XTick = curTick+1;
+        ax.XTickLabel = (curTick)*MDtimeInterval_;
+        ax = gca; ax.FontSize = 13; 
+        %
+        subplot(1,3,2);
+        figtmp = imagesc(smYmap, quantile(smYmap(:), [0.001, 0.999]));
+        title([chan2Name, '-', num2str(indL), 'L'])
+        colormap(jet); colorbar
+        figtmp.AlphaData = 1-isnan(Ymap);
+        axis xy;xlabel('Time (s)');
+        ax = gca;
+        curTick = ax.XTick;
+        ax.XTickMode = 'manual';
+        ax.XTick = curTick+1;
+        ax.XTickLabel = (curTick)*MDtimeInterval_;
+        ax = gca; ax.FontSize = 13;
+        %
+        Fpvec = winFits{indL}(:, 8);
+        subplot(1,3,3);
+        sigGC = -log10(Fpvec);
+        ind1 = (sigGC > -log10(0.05));
+        sigGC1 = sigGC;
+        sigGC1(~ind1) = NaN;
+        sigGC0 = sigGC;
+        sigGC0(ind1) = NaN;
+        
+        b = barh(1:wmax, sigGC0, 'b');
+        ax = gca; ax.YLim = [1, wmax];
+        axis xy
+        hold on
+        b = barh(1:wmax, sigGC1, 'r');
+        ax = gca; ax.YLim = [1, wmax];
+        gridvals = -log10([1:-0.25:0.1, 0.1:-0.025:0.01, 0.01:-0.0025:0.001, 0.001:-0.00025:0.0001, 0.0001:-0.000025:0.00001]);
+        for k = 1:numel(gridvals)
+            h = line([gridvals(k), gridvals(k)], [1, wmax]); 
+            h.Color = [.5 .5 .5, 0.4]; 
+        end        
+        
+        h = line([-log10(0.05), -log10(0.05)], [1, wmax]);
+        ptick = [0.1, 0.05, 0.01, 0.001, 0.0001];
+        logptick = -log10(ptick);
+        ax = gca;
+        ax.XLim = [0, 5];
+        ax.XTickMode = 'manual';
+        ax.XTick = logptick;
+        ax.XTickLabel = ptick;    
+        xlabel('P-value')
+        
+        ax = gca; ax.FontSize = 13;
+        % 2020/06/03
+        ax.XTickLabelRotation = 45;
+        
+    else
+        figPairedAct2{indL} = figure('Visible', p.figFlag, 'Position', [317 330 7*80*2 420]);
+    end
+end
+
+%% saveas
+for indL = 1:layerMax
+    saveas(figPairedAct2{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_PvalPairedMaps_Vslztn.png']), 'png')
+    saveas(figPairedAct2{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_PvalPairedMaps_Vslztn.fig']), 'fig')
+    
+    print(figPairedAct2{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_PvalPairedMaps_Vslztn.pdf']), ...
+        '-dpdf', '-bestfit')
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(figPairedAct2{indL})
+end
+
+%% resiMap2 (adjusted before)
+%%
+save(fullfile(figuresDir, ['GC_', fsaveName0, '_resiMap_Layers.mat']), 'resiMap')
+save(fullfile(figuresDir, ['GC_', fsaveName0, '_yhatFMap_Layers.mat']), 'yhatFMap')
+save(fullfile(figuresDir, ['GC_', fsaveName0, '_yhatRMap_Layers.mat']), 'yhatRMap')
+%% draw y yhat map
+
+smParam = 1;
+
+fyMap = cell(1, layerMax);
+fyhatFMap = cell(1, layerMax);
+fyhatRMap = cell(1, layerMax);
+
+for indL = 1:layerMax
+    
+    tmp = imActmap2{indL}(:, nanK+1:tmax-nanK2);
+    inputmap = [nan(wmax, nanK), zscore(tmp')', nan(wmax, nanK2)];
+    
+    switch all(isnan(inputmap(:)))
+        case true
+            filteredmap = nan(size(inputmap));
+            fyMap{indL} = figure('Visible', p.figFlag);
+            figtmp = imagesc(filteredmap);
+        case false
+            filteredmap = smoothActivityMap(inputmap, 'SmoothParam', smParam, 'UpSample', 1);
+            fyMap{indL} = figure('Visible', p.figFlag);
+            %figtmp = imagesc(filteredmap);
+            clim0 = quantile(abs(filteredmap(:)), 0.998);
+            figtmp = imagesc(filteredmap, [-clim0, clim0]);
+    end
+    
+    title(['Y of ', fsaveName0, '-', num2str(indL), 'L'])
+    colorbar;colormap(jet)
+    
+    figtmp.AlphaData = 1-isnan(inputmap);
+    axis xy;xlabel('Time (s)');ylabel('Window')
+    ax = gca;
+    curTick = ax.XTick;
+    ax.XTickMode = 'manual';
+    ax.XTick = curTick+1;
+    ax.XTickLabel = (curTick)*MDtimeInterval_;
+    ax = gca; ax.FontSize = 10;
+    %
+    inputmap = yhatFMap{indL};
+    
+    switch all(isnan(inputmap(:)))
+        case true
+            filteredmap = nan(size(inputmap));
+            fyhatFMap{indL} = figure('Visible', p.figFlag);
+            figtmp = imagesc(filteredmap);
+        case false
+            filteredmap = smoothActivityMap(inputmap, 'SmoothParam', smParam, 'UpSample', 1);
+            fyhatFMap{indL} = figure('Visible', p.figFlag);
+            %figtmp = imagesc(filteredmap);
+            figtmp = imagesc(filteredmap, [-clim0, clim0]);
+    end
+    
+    title(['Yhat Fullmodel of ', fsaveName0, '-', num2str(indL), 'L'])
+    colorbar;colormap(jet)
+    
+    figtmp.AlphaData = 1-isnan(inputmap);
+    axis xy;xlabel('Time (s)');ylabel('Window')
+    ax = gca;
+    curTick = ax.XTick;
+    ax.XTickMode = 'manual';
+    ax.XTick = curTick+1;
+    ax.XTickLabel = (curTick)*MDtimeInterval_;
+    ax = gca; ax.FontSize = 10;
+    %
+    inputmap = yhatRMap{indL};
+    
+    switch all(isnan(inputmap(:)))
+        case true
+            filteredmap = nan(size(inputmap));
+            fyhatRMap{indL} = figure('Visible', p.figFlag);
+            figtmp = imagesc(filteredmap);
+        case false
+            filteredmap = smoothActivityMap(inputmap, 'SmoothParam', smParam, 'UpSample', 1);
+            fyhatRMap{indL} = figure('Visible', p.figFlag);
+            %figtmp = imagesc(filteredmap);
+            figtmp = imagesc(filteredmap, [-clim0, clim0]);
+    end
+    
+    title(['Yhat Reducedmodel of ', fsaveName0, '-', num2str(indL), 'L'])
+    colorbar;colormap(jet)
+    
+    figtmp.AlphaData = 1-isnan(inputmap);
+    axis xy;xlabel('Time (s)');ylabel('Window')
+    ax = gca;
+    curTick = ax.XTick;
+    ax.XTickMode = 'manual';
+    ax.XTick = curTick+1;
+    ax.XTickLabel = (curTick)*MDtimeInterval_;
+    ax = gca; ax.FontSize = 10;
+    
+    %
+    saveas(fyMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yMap.png']), 'png')
+    saveas(fyhatFMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yhatFMap.png']), 'png')
+    saveas(fyhatRMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yhatRMap.png']), 'png')
+    
+    saveas(fyMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yMap.fig']), 'fig')
+    saveas(fyhatFMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yhatFMap.fig']), 'fig')
+    saveas(fyhatRMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_yhatRMap.fig']), 'fig')
+    
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(fyMap{indL})
+    close(fyhatFMap{indL})
+    close(fyhatRMap{indL})
+end
+
+%% draw resiMap, yhatF,R map
+
+smParam = 1;
+
+fresiMap = cell(1, layerMax);
+for indL = 1:layerMax
+    
+    inputmap = resiMap{indL};
+    
+    switch all(isnan(inputmap(:)))
+        case true
+            filteredmap = nan(size(inputmap));
+            fresiMap{indL} = figure('Visible', p.figFlag);
+            figtmp = imagesc(filteredmap);
+        case false
+            filteredmap = smoothActivityMap(inputmap, 'SmoothParam', smParam, 'UpSample', 1);
+            fresiMap{indL} = figure('Visible', p.figFlag);
+            %figtmp = imagesc(filteredmap);
+            figtmp = imagesc(filteredmap, quantile(filteredmap(:), [0.001, 0.999]));
+    end
+    
+    title(['GC-Residuals of ', fsaveName0, '-', num2str(indL), 'L'])
+    
+    colorbar;colormap(jet)
+    
+    figtmp.AlphaData = 1-isnan(inputmap);
+    axis xy;xlabel('Time (s)');ylabel('Window')
+    ax = gca;
+    curTick = ax.XTick;
+    ax.XTickMode = 'manual';
+    ax.XTick = curTick+1;
+    ax.XTickLabel = (curTick)*MDtimeInterval_;
+    
+    ax = gca; ax.FontSize = 10;
+    
+    %%
+    saveas(fresiMap{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_resiMap2.png']), 'png')
+    
+end
+
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(fresiMap{indL})
+end
+
+%%
+%% draw autoCorr curves (means) acCurve = autoCorrCurvePermTest
+
+numPerm = 200;
+parpoolNum = p.parpoolNum;
+rseed = 'shuffle';
+
+acCurve = cell(1, layerMax);
+for indL = 1:layerMax
+    
+    title0 = [fsaveName0, '-residuals-', num2str(indL), 'L'];
+    [acCurve{indL}, ~] = autoCorrCurvePermTest_mean(resiMap{indL}, title0, MDtimeInterval_, ...
+        numPerm, parpoolNum, rseed, 'figFlag', p.figFlag);
+    
+    saveas(acCurve{indL}, fullfile(figuresDir, ['acCurve_', title0, '.png']), 'png')
+    
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(acCurve{indL})
+end
+
+%%  partial Rsquare
+
+hist_rsq = cell(1, layerMax);
+
+for indL = 1:layerMax
+
+    Fpvec = winFits{indL}(:, 8);
+    partR2 = winFits{indL}(:, 11);
+    ind0 = (Fpvec >= 0.05);
+    %
+    partR2sig = partR2;
+    partR2sig(ind0) = NaN;
+    
+    hist_rsq{indL} = figure('Visible', p.figFlag);
+    %histogram(partR2, 'BinMethod', 'fd')
+    plot(1:wmax, partR2)
+    hold on
+    scatter(1:wmax, partR2sig, [], 'r')
+    refline([0, mean(partR2, 'omitnan')]);
+    title(['partial-Rsquares: ', fsaveName0, '-', num2str(indL), 'L', ' mean: ', num2str(mean(partR2, 'omitnan'))])
+    xlabel('R-squares')
+    
+    ax = gca; ax.FontSize = 10;    
+   
+    %%
+    saveas(hist_rsq{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_partialRsquares.png']), 'png')
+    
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(hist_rsq{indL})
+end
+
+%%  condition number
+
+hist_cnum = cell(1, layerMax);
+
+for indL = 1:layerMax
+    
+    cnumVec = winFits{indL}(:, 2);
+    if ~isreal(cnumVec); cnumVec = nan(size(cnumVec)); end
+    hist_cnum{indL} = figure('Visible', p.figFlag);
+    plot(cnumVec)
+    refline([0, mean(cnumVec, 'omitnan')]);
+    h=refline([0, 30]); h.Color = 'r';
+    title({['condNum fullmodAllwin: ', fsaveName0, '-', num2str(indL), 'L']; ...
+        [' mean: ', num2str(mean(cnumVec, 'omitnan'))]})
+    xlabel('condNum')
+    
+    ax = gca; ax.FontSize = 10;
+    ax.YLim(1) = 0;
+    
+    %%
+    saveas(hist_cnum{indL}, fullfile(figuresDir, [fsaveName0,'_',num2str(indL),'L_condNum.png']), 'png')
+    
+end
+
+%% close figures
+pause(0.5)
+for indL = 1:layerMax
+    close(hist_cnum{indL})
+end
+
+disp('==== End of MD_iGC_SPAR4ch ====')
