@@ -5,7 +5,7 @@ u-integrate is previous named Granger-Causality Analysis or GCA. This distributi
 
 ## Related paper
 
-- This repository is for initial distribution of the entire codes to generate the results in the manuscript, [**Granger-causal inference of the lamellipodial actin regulator hierarchy by live cell imaging without perturbation**](https://doi.org/10.1016/j.cels.2022.05.003), *Cell Systems*, 2022, 13(6):471-487.e8, written by Jungsik Noh, Tadamoto Isogai, Joseph Chi, Kushal Bhatt, [Gaudenz Danuser](https://www.danuserlab-utsw.org/).
+- This repository is for initial distribution of the entire codes to generate the results in the manuscript, [**Granger-causal inference of the lamellipodial actin regulator hierarchy by live cell imaging without perturbation**](https://doi.org/10.1016/j.cels.2022.05.003), *Cell Systems*, 2022, 13(6):471-487.e8, written by Jungsik Noh, Tadamoto Isogai, Joseph Chi, Kushal Bhatt, Gaudenz Danuser.
 
 ## Documents
 
@@ -85,6 +85,4 @@ u-integrate is previous named Granger-Causality Analysis or GCA. This distributi
 Jungsik Noh (jungsik.noh@utsouthwestern.edu), Qiongjing (Jenny) Zou (Qiongjing.Zou@utsouthwestern.edu)
 
 ----------------------
-[Danuser Lab Website](https://www.danuserlab-utsw.org/)
-
 [Software Links](https://github.com/DanuserLab)
