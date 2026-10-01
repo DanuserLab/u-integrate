@@ -1,18 +1,18 @@
-function mainFig = folderViewer(ML, varargin)
+function mainFig = folderViewer(MLorImL, varargin)
 %FOLDERVIEWER creates a graphical interface to open the folders of the
-%analysis output of a MovieList.
-% The analysis output are both at MovieData level (if any) and MovieList
+%analysis output of a MovieList or ImageList.
+% The analysis output are both at MovieData/ImageData level (if any) and MovieList/ImageList
 % level.
 % 
 % h = folderViewer(ML, 'procId', 2)
 % folderViewer(ML, 'procId', 2)
 %
 % This function is created to display (open results folders) of a
-% MovieList's process (determined by the outFilePaths_ parameter).
+% MovieList or ImageList process (determined by the outFilePaths_ parameter).
 % 
 % Input 
 %
-%   ML - a MovieList
+%   ML - a MovieList or ImageList
 % 
 %   procId - the specified index of a process for displaying the results.
 %
@@ -31,6 +31,9 @@ function mainFig = folderViewer(ML, varargin)
 %
 %
 % Qiongjing (Jenny) Zou, Oct 2018
+%
+% Added ImL as input as well.
+% Qiongjing (Jenny) Zou, Sep 2026
 %
 % Copyright (C) 2026, Danuser Lab - UTSouthwestern 
 %
@@ -54,11 +57,11 @@ function mainFig = folderViewer(ML, varargin)
 
 % Check input
 ip = inputParser;
-ip.addRequired('ML',@(x) isa(x,'MovieList'));
+ip.addRequired('MLorImL',@(x) isa(x,'MovieList') || isa(x,'ImageList'));
 ip.addParameter('procId',[],@isnumeric);
 ip.addParameter('folderIndex',0,@isscalar);
 ip.addParameter('showProcTag',1,@islogical);
-ip.parse(ML,varargin{:});
+ip.parse(MLorImL,varargin{:});
 
 % Generate the main figure
 mainFig=figure('Name','FolderViewer','Position',[0 0 200 200],...
@@ -68,12 +71,19 @@ mainFig=figure('Name','FolderViewer','Position',[0 0 200 200],...
 userData=get(mainFig,'UserData');
 set(mainFig, 'UserData', userData);
 
-% Read the MovieList and process index input 
-userData.ML=ip.Results.ML;
+% Read the MovieList/ImageList and process index input
+userData.MO=ip.Results.MLorImL;
+if isa(ip.Results.MLorImL,'ImageList')
+    listLabel = 'ImageList';
+    itemLabel = 'Image';
+else
+    listLabel = 'MovieList';
+    itemLabel = 'Movie';
+end
 userData.folderIndex=ip.Results.folderIndex;
 userData.procId = ip.Results.procId;
 if ~isempty(ip.Results.procId)
-    procId = userData.ML.getProcessIndex(class(userData.ML.processes_{ip.Results.procId}));
+    procId = userData.MO.getProcessIndex(class(userData.MO.processes_{ip.Results.procId}));
 else
     error("Must specify a ''procId'' and it must be positive integers.")
 end
@@ -85,19 +95,19 @@ hPosition = 10;
 panelsLength = 1250; % qz changed from 500 to 1250 to make the whole FilderViewer window wider
 panelsHeight = 0;
 
-%% Create movie panel
+%% Create list panel
 moviePanel = uipanel(mainFig,...
     'Title','','BackgroundColor',get(0,'defaultUicontrolBackgroundColor'),...
     'Units','pixels','Tag','uipanel_movie','BorderType','none');
 
-% Create movie location edit box
+% Create list location edit box
 uicontrol(moviePanel,'Style','text','Position',[10 hPosition 40 20],...
-    'String','Movie','Tag','text_movie');
+    'String',itemLabel,'Tag','text_movie');
 
 %%
-% Create popupmenu if input is a MovieList, else  list the movie path
+% Create popupmenu if input is a MovieList/ImageList, else list the data path
 
-folderPaths = userData.ML.processes_{procId}.outFilePaths_;
+folderPaths = userData.MO.processes_{procId}.outFilePaths_;
 
 % To deal with case that folderPaths has nested cell array 
 % by Qiongjing (Jenny) Zou, Oct 2024
@@ -122,7 +132,7 @@ uicontrol(moviePanel,'Style','popupmenu','Position',[60 hPosition panelsLength-1
     'Value',find(userData.folderIndex==folderIndex),...
     'HorizontalAlignment','left','BackgroundColor','white','Tag','popup_movie',...
     'Callback',@(h,event) switchFolder(h,guidata(h)));
-if userData.folderIndex==0, set(findobj(moviePanel,'Tag','text_movie'),'String','List'); end
+if userData.folderIndex==0, set(findobj(moviePanel,'Tag','text_movie'),'String',listLabel); end
     
 
 % Add help button
@@ -170,7 +180,7 @@ if isempty(userData.procId)
     errordlg('Please choose a folder to view result from the dropdown options.')
 else
     % Use the OS-specific command to open result in exploration window
-    folderPath = userData.ML.processes_{userData.procId}.outFilePaths_;
+    folderPath = userData.MO.processes_{userData.procId}.outFilePaths_;
     
     % To deal with case that folderPath has nested cell array
     % by Qiongjing (Jenny) Zou, Oct 2024
