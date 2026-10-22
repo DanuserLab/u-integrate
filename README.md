@@ -5,8 +5,8 @@ u-integrate is previous named Granger-Causality Analysis or GCA. This distributi
 
 ## Related paper
 
-- We extended the original framework into **four-component GCA** for analysis of three-channel live-cell video data. All codes and pipeline scripts can be found in [GCA_4Components](code/GrangerCausalityAnalysis/GCA_4Components), which is written by Anteneh Godana. 
-The corresponding manuscript is **Granger-causal inference dissects subcellular actin regulatory pathways from live cell imaging** (2026), written by Anteneh Godana, Tadamoto Isogai, Gaudenz Danuser, Jungsik Noh. 
+- We extended the original framework into **four-component GCA** for analysis of three-channel live-cell video data. All codes and pipeline scripts can be found in [GCA_4Components](code/GrangerCausalityAnalysis/GCA_4Components), which was written by Anteneh Godana. 
+The corresponding manuscript is **Granger-causal inference dissects subcellular actin regulatory pathways from live cell imaging** (2026), written by Anteneh Godana, Tadamoto Isogai, Gaudenz Danuser, Jungsik Noh (to be submitted). 
 - This repository is for initial distribution of the entire codes to generate the results in the manuscript, [**Granger-causal inference of the lamellipodial actin regulator hierarchy by live cell imaging without perturbation**](https://doi.org/10.1016/j.cels.2022.05.003), *Cell Systems*, 2022, 13(6):471-487.e8, written by Jungsik Noh, Tadamoto Isogai, Joseph Chi, Kushal Bhatt, Gaudenz Danuser.
 
 ## Documents
